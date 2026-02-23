@@ -43,6 +43,14 @@ export interface Memo {
   transcript: string;
 }
 
+export interface RecentMemo {
+  id: string;
+  category: MemoCategory;
+  title: string;
+  summary: string;
+  createdAt: string;
+}
+
 export interface SkyZone {
   id: string;
   category: MemoCategory;

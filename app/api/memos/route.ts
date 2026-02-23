@@ -1,9 +1,9 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { mkdir, writeFile } from "node:fs/promises";
 import { extname, join } from "node:path";
 import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
-import { summarizeText, transcribeAudio } from "@/lib/ai";
+import { analyzeTranscript, transcribeAudio } from "@/lib/ai";
 import { ensureMemoTable } from "@/lib/bootstrap";
 
 export const runtime = "nodejs";
@@ -33,12 +33,20 @@ export async function GET(request: Request) {
     await ensureMemoTable();
     const { searchParams } = new URL(request.url);
     const rawLimit = Number(searchParams.get("limit") ?? "3");
-    const limit = Number.isFinite(rawLimit) ? Math.min(Math.max(rawLimit, 1), 20) : 3;
+    const limit = Number.isFinite(rawLimit) ? Math.min(Math.max(rawLimit, 1), 50) : 3;
 
     const rows = await prisma.memo.findMany({
       orderBy: { createdAt: "desc" },
       take: limit,
-      select: { id: true, title: true, summary: true, createdAt: true },
+      select: {
+        id: true,
+        title: true,
+        summary: true,
+        category: true,
+        tags: true,
+        summaryPoints: true,
+        createdAt: true,
+      },
     });
 
     return NextResponse.json({
@@ -46,6 +54,9 @@ export async function GET(request: Request) {
         id: row.id,
         title: row.title,
         summary: row.summary,
+        category: row.category,
+        tags: row.tags ? row.tags.split(",").filter(Boolean) : [],
+        summaryPoints: row.summaryPoints ? JSON.parse(row.summaryPoints) : [],
         createdAt: row.createdAt.toISOString(),
       })),
     });
@@ -76,16 +87,27 @@ export async function POST(request: Request) {
     await writeFile(filepath, buffer);
 
     const transcript = await transcribeAudio(audio);
-    const { title, summary } = await summarizeText(transcript);
+    const analyzed = await analyzeTranscript(transcript);
 
     const created = await prisma.memo.create({
       data: {
-        title,
-        summary,
+        title: analyzed.title,
+        summary: analyzed.summary,
         transcript,
         audioPath: `/uploads/${filename}`,
+        category: analyzed.category,
+        tags: analyzed.tags.join(","),
+        summaryPoints: JSON.stringify(analyzed.summaryPoints),
       },
-      select: { id: true, title: true, summary: true, createdAt: true },
+      select: {
+        id: true,
+        title: true,
+        summary: true,
+        category: true,
+        tags: true,
+        summaryPoints: true,
+        createdAt: true,
+      },
     });
 
     return NextResponse.json(
@@ -94,6 +116,9 @@ export async function POST(request: Request) {
           id: created.id,
           title: created.title,
           summary: created.summary,
+          category: created.category,
+          tags: created.tags ? created.tags.split(",").filter(Boolean) : [],
+          summaryPoints: created.summaryPoints ? JSON.parse(created.summaryPoints) : [],
           createdAt: created.createdAt.toISOString(),
         },
       },

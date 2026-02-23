@@ -1,11 +1,21 @@
 ﻿"use client";
 
-import { useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import MicButton from "@/components/MicButton";
 import OrbBackground from "@/components/OrbBackground";
 import RecentMemos from "@/components/RecentMemos";
 import { useRecordingUi } from "@/components/RecordingProvider";
-import { mockRecentMemos } from "@/lib/mock";
+import type { MemoCategory, RecentMemo } from "@/lib/types";
+
+type MemosResponse = {
+  items: Array<{
+    id: string;
+    title: string;
+    summary: string;
+    category?: MemoCategory;
+    createdAt: string;
+  }>;
+};
 
 function ListeningBars({ active }: { active: boolean }) {
   const heights = [16, 28, 40, 30, 46, 25, 34, 18, 13];
@@ -34,24 +44,52 @@ function ProcessingState({ status }: { status: "uploading" | "processing" }) {
   );
 }
 
+function normalizeCategory(category?: MemoCategory): MemoCategory {
+  return category ?? "メモ";
+}
+
 export default function HomePage() {
-  const { status, errorMessage, startRecording, stopRecording } = useRecordingUi();
+  const { status, errorMessage, refreshKey, recordingSupported, startRecording, stopRecording } = useRecordingUi();
+  const [recentMemos, setRecentMemos] = useState<RecentMemo[]>([]);
+
+  const fetchRecentMemos = useCallback(async () => {
+    const response = await fetch("/api/memos?limit=3", { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error("メモ一覧の取得に失敗しました");
+    }
+    const payload = (await response.json()) as MemosResponse;
+    const items: RecentMemo[] = payload.items.map((item) => ({
+      id: item.id,
+      title: item.title,
+      summary: item.summary,
+      category: normalizeCategory(item.category),
+      createdAt: item.createdAt,
+    }));
+    setRecentMemos(items);
+  }, []);
+
+  useEffect(() => {
+    fetchRecentMemos().catch(() => {
+      setRecentMemos([]);
+    });
+  }, [fetchRecentMemos, refreshKey]);
 
   const helperText = useMemo(() => {
+    if (!recordingSupported) return "このブラウザは録音非対応です";
     if (status === "recording") return "録音中 - 思考を自由に展開してください";
     if (status === "uploading") return "音声データをアップロードしています";
-    if (status === "processing") return "メモを解析し、要約を生成しています";
+    if (status === "processing") return "文字起こし・要約・カテゴリ判定を実行しています";
     if (status === "error") return errorMessage || "処理に失敗しました";
     return "録音ボタンを押して新しいメモを開始";
-  }, [errorMessage, status]);
+  }, [errorMessage, recordingSupported, status]);
 
-  const onMicClick = () => {
+  const onMicClick = async () => {
     if (status === "recording") {
       stopRecording();
       return;
     }
     if (status === "idle" || status === "error") {
-      startRecording();
+      await startRecording();
     }
   };
 
@@ -64,7 +102,7 @@ export default function HomePage() {
           <div className="relative aspect-square">
             <OrbBackground isRecording={recording} />
             <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-[57%]">
-              <MicButton active={recording} busy={status === "uploading" || status === "processing"} onClick={onMicClick} />
+              <MicButton active={recording} busy={status === "uploading" || status === "processing"} onClick={() => void onMicClick()} />
             </div>
             <div className="absolute left-1/2 top-[69%] z-10 -translate-x-1/2">
               <ListeningBars active={recording} />
@@ -78,7 +116,7 @@ export default function HomePage() {
         <p className={`mt-3 text-[12px] font-medium ${status === "error" ? "text-[#ef4444]" : "text-[var(--text-dim)]"}`}>{helperText}</p>
       </section>
 
-      <RecentMemos memos={mockRecentMemos} />
+      <RecentMemos memos={recentMemos} />
 
       <footer className="pb-8 text-center text-[12px] font-medium text-[var(--text-dim)]">録音中 - 思考を自由に展開してください</footer>
 

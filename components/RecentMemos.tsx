@@ -1,8 +1,8 @@
 ﻿import Link from "next/link";
-import type { Memo } from "@/lib/types";
+import type { RecentMemo } from "@/lib/types";
 import MemoCard from "@/components/MemoCard";
 
-export default function RecentMemos({ memos }: { memos: Memo[] }) {
+export default function RecentMemos({ memos }: { memos: RecentMemo[] }) {
   return (
     <section className="w-full px-8 pb-8">
       <div className="mb-3 flex items-center justify-between">
