@@ -1,21 +1,22 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ConstellationCanvas from "@/components/ConstellationCanvas";
 import FilterChips from "@/components/FilterChips";
 import InboxPreviewPanel from "@/components/InboxPreviewPanel";
 import SearchBar from "@/components/SearchBar";
-import { mockRecentMemos, mockSky } from "@/lib/mock";
+import { mockInboxMemos, mockSky } from "@/lib/mock";
+import { buildConstellationSky } from "@/lib/constellation";
 import type { Memo, PeriodFilter } from "@/lib/types";
 
 export default function InboxPage() {
   const [search, setSearch] = useState("");
   const [period, setPeriod] = useState<PeriodFilter>("all");
   const [category, setCategory] = useState<string>("すべて");
-  const [selectedMemoId, setSelectedMemoId] = useState<string>(mockRecentMemos[0]?.id ?? "");
+  const [selectedMemoId, setSelectedMemoId] = useState<string>(mockInboxMemos[0]?.id ?? "");
 
   const visibleMemos = useMemo(() => {
-    return mockRecentMemos.filter((memo) => {
+    return mockInboxMemos.filter((memo) => {
       const byCategory = category === "すべて" || memo.category === category;
       const bySearch =
         search.length === 0 || memo.title.includes(search) || memo.summary.includes(search) || memo.category.includes(search);
@@ -24,29 +25,19 @@ export default function InboxPage() {
     });
   }, [category, period, search]);
 
+  useEffect(() => {
+    if (visibleMemos.length === 0) return;
+    if (!visibleMemos.some((memo) => memo.id === selectedMemoId)) {
+      setSelectedMemoId(visibleMemos[0].id);
+    }
+  }, [selectedMemoId, visibleMemos]);
+
   const selectedMemo =
     visibleMemos.find((memo) => memo.id === selectedMemoId) ??
-    mockRecentMemos.find((memo) => memo.id === selectedMemoId) ??
-    mockRecentMemos[0];
+    mockInboxMemos.find((memo) => memo.id === selectedMemoId) ??
+    mockInboxMemos[0];
 
-  const selectableIds = new Set(visibleMemos.map((memo) => memo.id));
-
-  const sky = useMemo(
-    () => ({
-      ...mockSky,
-      stars: mockSky.stars.filter((star) => {
-        const byCategory = category === "すべて" || star.category === category;
-        const byMemo = selectableIds.has(star.memoId);
-        return byCategory && byMemo;
-      }),
-      links: mockSky.links.filter((line) => {
-        const from = mockSky.stars.find((star) => star.id === line.from);
-        const to = mockSky.stars.find((star) => star.id === line.to);
-        return !!from && !!to && selectableIds.has(from.memoId) && selectableIds.has(to.memoId);
-      }),
-    }),
-    [category, selectableIds]
-  );
+  const sky = useMemo(() => buildConstellationSky(visibleMemos, mockSky), [visibleMemos]);
 
   return (
     <main className="h-[calc(100vh-64px)] min-h-[836px] flex-1 max-[1024px]:h-auto max-[1024px]:min-h-0">

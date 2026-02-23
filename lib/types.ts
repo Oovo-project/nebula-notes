@@ -66,6 +66,7 @@ export interface SkyLink {
   id: string;
   from: string;
   to: string;
+  score?: number;
 }
 
 export interface Sky {

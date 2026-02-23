@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useMemo } from "react";
-import type { MemoCategory, Sky, SkyStar } from "@/lib/types";
+import type { MemoCategory, Sky, SkyLink, SkyStar } from "@/lib/types";
 
 const categoryTone: Record<MemoCategory, string> = {
   アイデア: "text-[#8ab4f8b3]",
@@ -16,7 +16,7 @@ const categoryTone: Record<MemoCategory, string> = {
   メモ: "text-[#8ab4f8b3]",
 };
 
-function lineStyle(from: SkyStar, to: SkyStar) {
+function lineStyle(from: SkyStar, to: SkyStar, score = 0.1) {
   const dx = to.x - from.x;
   const dy = to.y - from.y;
   const length = Math.sqrt(dx * dx + dy * dy);
@@ -26,6 +26,8 @@ function lineStyle(from: SkyStar, to: SkyStar) {
     left: `${from.x}%`,
     top: `${from.y}%`,
     width: `${length}%`,
+    height: `${0.8 + score * 0.8}px`,
+    opacity: `${0.14 + score * 0.46}`,
     transform: `rotate(${angle}deg)`,
     transformOrigin: "0 0",
   };
@@ -59,7 +61,7 @@ export default function ConstellationCanvas({
             transform: "translate(-50%, -50%)",
           }}
         >
-          <div className={`absolute left-[30%] top-[12%] flex items-center gap-1 text-[13px] font-medium ${categoryTone[zone.category]}`}>
+          <div className={`absolute left-[26%] top-[10%] flex items-center gap-1 text-[13px] font-medium ${categoryTone[zone.category]}`}>
             <span>{zone.category}</span>
             <span className="text-[11px] text-[#8ab4f866]">{zone.count}</span>
           </div>
@@ -71,7 +73,13 @@ export default function ConstellationCanvas({
           const from = starsById.get(line.from);
           const to = starsById.get(line.to);
           if (!from || !to) return null;
-          return <span key={line.id} className="absolute h-px bg-[#8ab4f826]" style={lineStyle(from, to)} />;
+          return (
+            <span
+              key={line.id}
+              className="absolute bg-[#8ab4f826] shadow-[0_0_6px_rgba(138,180,248,0.18)]"
+              style={lineStyle(from, to, line.score)}
+            />
+          );
         })}
       </div>
 
@@ -84,8 +92,8 @@ export default function ConstellationCanvas({
             onClick={() => onSelectMemo(star.memoId)}
             className={`absolute rounded-full transition ${
               selected
-                ? "bg-[#8ab4f8] shadow-[0_0_18px_rgba(138,180,248,0.55)]"
-                : "bg-[#8ab4f8cc] shadow-[0_0_12px_rgba(138,180,248,0.35)] hover:scale-110 hover:shadow-[0_0_16px_rgba(138,180,248,0.45)]"
+                ? "bg-[#8ab4f8] shadow-[0_0_20px_rgba(138,180,248,0.6)]"
+                : "bg-[#8ab4f8cc] shadow-[0_0_12px_rgba(138,180,248,0.35)] hover:scale-110 hover:shadow-[0_0_18px_rgba(138,180,248,0.48)]"
             }`}
             style={{
               left: `${star.x}%`,
