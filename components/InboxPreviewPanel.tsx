@@ -18,7 +18,17 @@ function FactIcon({ index }: { index: number }) {
   return <span className="text-[12px] text-[#8ab4f8]">↗</span>;
 }
 
-export default function InboxPreviewPanel({ memo }: { memo: Memo }) {
+export default function InboxPreviewPanel({ memo }: { memo: Memo | null }) {
+  if (!memo) {
+    return (
+      <aside className="h-full w-[400px] border-l border-[var(--line-soft)] bg-[var(--surface-panel)] max-[1024px]:w-full max-[1024px]:border-l-0 max-[1024px]:border-t">
+        <div className="flex h-full items-center justify-center px-6">
+          <p className="text-[12px] text-[var(--text-dim)]">録音メモを作成すると、ここにプレビューが表示されます。</p>
+        </div>
+      </aside>
+    );
+  }
+
   return (
     <aside className="h-full w-[400px] border-l border-[var(--line-soft)] bg-[var(--surface-panel)] max-[1024px]:w-full max-[1024px]:border-l-0 max-[1024px]:border-t">
       <div className="flex flex-col gap-4 px-6 pb-6 pt-8">
@@ -27,7 +37,7 @@ export default function InboxPreviewPanel({ memo }: { memo: Memo }) {
           {memo.category}
         </span>
         <h3 className="text-[20px] font-bold leading-tight text-white">{memo.title}</h3>
-        <p className="text-[12px] text-[var(--text-dim)]">2024年10月25日 14:02</p>
+        <p className="text-[12px] text-[var(--text-dim)]">{memo.createdAtLabel}</p>
       </div>
 
       <div className="h-px w-full bg-[var(--line-soft)]" />

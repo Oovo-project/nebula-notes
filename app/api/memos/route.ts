@@ -28,6 +28,25 @@ function pickExtension(file: File): string {
   return ".webm";
 }
 
+function parseTags(raw: string | null): string[] {
+  if (!raw) return [];
+  return raw
+    .split(",")
+    .map((token) => token.trim())
+    .filter(Boolean);
+}
+
+function parseSummaryPoints(raw: string | null): string[] {
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed.map((item) => String(item));
+  } catch {
+    return [raw];
+  }
+  return [];
+}
+
 export async function GET(request: Request) {
   try {
     await ensureMemoTable();
@@ -45,6 +64,7 @@ export async function GET(request: Request) {
         category: true,
         tags: true,
         summaryPoints: true,
+        transcript: true,
         createdAt: true,
       },
     });
@@ -55,8 +75,9 @@ export async function GET(request: Request) {
         title: row.title,
         summary: row.summary,
         category: row.category,
-        tags: row.tags ? row.tags.split(",").filter(Boolean) : [],
-        summaryPoints: row.summaryPoints ? JSON.parse(row.summaryPoints) : [],
+        tags: parseTags(row.tags),
+        summaryPoints: parseSummaryPoints(row.summaryPoints),
+        transcript: row.transcript ?? "",
         createdAt: row.createdAt.toISOString(),
       })),
     });
@@ -106,6 +127,7 @@ export async function POST(request: Request) {
         category: true,
         tags: true,
         summaryPoints: true,
+        transcript: true,
         createdAt: true,
       },
     });
@@ -117,8 +139,9 @@ export async function POST(request: Request) {
           title: created.title,
           summary: created.summary,
           category: created.category,
-          tags: created.tags ? created.tags.split(",").filter(Boolean) : [],
-          summaryPoints: created.summaryPoints ? JSON.parse(created.summaryPoints) : [],
+          tags: parseTags(created.tags),
+          summaryPoints: parseSummaryPoints(created.summaryPoints),
+          transcript: created.transcript ?? "",
           createdAt: created.createdAt.toISOString(),
         },
       },

@@ -4,7 +4,9 @@ import KeyFacts from "@/components/KeyFacts";
 import MemoInfoPanel from "@/components/MemoInfoPanel";
 import OpenLoops from "@/components/OpenLoops";
 import Tabs from "@/components/Tabs";
-import { getMemoById, mockMemoDetail } from "@/lib/mock";
+import { ensureMemoTable } from "@/lib/bootstrap";
+import { toUiMemo } from "@/lib/memo-normalizer";
+import { prisma } from "@/lib/prisma";
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -12,11 +14,32 @@ type Props = {
 
 export default async function MemoDetailPage({ params }: Props) {
   const { id } = await params;
-  const memo = (await getMemoById(id)) ?? (id === mockMemoDetail.id ? mockMemoDetail : null);
+  await ensureMemoTable();
 
-  if (!memo) {
+  const row = await prisma.memo.findUnique({
+    where: { id },
+    select: {
+      id: true,
+      title: true,
+      summary: true,
+      category: true,
+      tags: true,
+      summaryPoints: true,
+      transcript: true,
+      createdAt: true,
+    },
+  });
+
+  if (!row) {
     notFound();
   }
+
+  const memo = toUiMemo({
+    ...row,
+    tags: row.tags,
+    summaryPoints: row.summaryPoints,
+    transcript: row.transcript,
+  });
 
   return (
     <main className="flex-1 bg-black">
@@ -31,7 +54,7 @@ export default async function MemoDetailPage({ params }: Props) {
               <span className="inline-flex h-6 items-center rounded-[8px] border border-[#3b82f64d] bg-[#3b82f633] px-[10px] text-[11px] font-medium text-[#93c5fd]">
                 {memo.category}
               </span>
-              <span>{memo.createdAtLabel === "14:02" ? "2024年10月25日 14:02" : memo.createdAtLabel}</span>
+              <span>{memo.createdAtLabel}</span>
               <span>📌</span>
             </div>
 

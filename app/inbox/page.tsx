@@ -5,25 +5,55 @@ import ConstellationCanvas from "@/components/ConstellationCanvas";
 import FilterChips from "@/components/FilterChips";
 import InboxPreviewPanel from "@/components/InboxPreviewPanel";
 import SearchBar from "@/components/SearchBar";
-import { mockInboxMemos, mockSky } from "@/lib/mock";
 import { buildConstellationSky } from "@/lib/constellation";
+import { mockSky } from "@/lib/mock";
+import { toUiMemo, type ApiMemoItem } from "@/lib/memo-normalizer";
 import type { Memo, PeriodFilter } from "@/lib/types";
+
+type MemosResponse = {
+  items: ApiMemoItem[];
+};
 
 export default function InboxPage() {
   const [search, setSearch] = useState("");
   const [period, setPeriod] = useState<PeriodFilter>("all");
   const [category, setCategory] = useState<string>("すべて");
-  const [selectedMemoId, setSelectedMemoId] = useState<string>(mockInboxMemos[0]?.id ?? "");
+  const [memos, setMemos] = useState<Memo[]>([]);
+  const [selectedMemoId, setSelectedMemoId] = useState<string>("");
+
+  useEffect(() => {
+    let ignore = false;
+
+    const fetchMemos = async () => {
+      const response = await fetch("/api/memos?limit=80", { cache: "no-store" });
+      if (!response.ok) return;
+      const payload = (await response.json()) as MemosResponse;
+      const mapped = payload.items.map((item) => toUiMemo(item));
+      if (ignore) return;
+      setMemos(mapped);
+      if (mapped.length > 0 && !mapped.some((memo) => memo.id === selectedMemoId)) {
+        setSelectedMemoId(mapped[0].id);
+      }
+    };
+
+    fetchMemos().catch(() => {
+      if (!ignore) setMemos([]);
+    });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const visibleMemos = useMemo(() => {
-    return mockInboxMemos.filter((memo) => {
+    return memos.filter((memo) => {
       const byCategory = category === "すべて" || memo.category === category;
       const bySearch =
         search.length === 0 || memo.title.includes(search) || memo.summary.includes(search) || memo.category.includes(search);
       const byPeriod = period === "all" ? true : true;
       return byCategory && bySearch && byPeriod;
     });
-  }, [category, period, search]);
+  }, [category, memos, period, search]);
 
   useEffect(() => {
     if (visibleMemos.length === 0) return;
@@ -32,10 +62,7 @@ export default function InboxPage() {
     }
   }, [selectedMemoId, visibleMemos]);
 
-  const selectedMemo =
-    visibleMemos.find((memo) => memo.id === selectedMemoId) ??
-    mockInboxMemos.find((memo) => memo.id === selectedMemoId) ??
-    mockInboxMemos[0];
+  const selectedMemo = visibleMemos.find((memo) => memo.id === selectedMemoId) ?? null;
 
   const sky = useMemo(() => buildConstellationSky(visibleMemos, mockSky), [visibleMemos]);
 
@@ -54,7 +81,7 @@ export default function InboxPage() {
           <ConstellationCanvas sky={sky} selectedMemoId={selectedMemoId} onSelectMemo={setSelectedMemoId} />
         </div>
 
-        <InboxPreviewPanel memo={selectedMemo as Memo} />
+        <InboxPreviewPanel memo={selectedMemo} />
       </section>
     </main>
   );
