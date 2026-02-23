@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>音声メモアプリ</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="navbar">
+        <div class="nav-left">
+          <div class="logo">
+            <span class="logo-icon">◉</span>
+            <span class="logo-text">音声メモ</span>
+          </div>
+          <nav class="nav-links">
+            <a href="#" class="active">ホーム</a>
+            <a href="#">保存トレイ</a>
+            <a href="#">このアプリについて</a>
+          </nav>
+        </div>
+        <div class="nav-right">
+          <div class="status-badge">
+            <span class="dot"></span>
+            <span id="recordingStatus">待機中... 00:00</span>
+          </div>
+          <button id="gridButton" class="icon-btn" aria-label="グリッド">▦</button>
+        </div>
+      </header>
+
+      <section class="center-section">
+        <div class="orb-container">
+          <div class="outer-ring"></div>
+          <div class="nebula"></div>
+          <div class="mic-bg">
+            <button id="recordButton" class="mic-btn" aria-label="録音開始/停止">🎤</button>
+          </div>
+          <div class="waves" id="waves">
+            <span style="--h:16px"></span>
+            <span style="--h:28px"></span>
+            <span style="--h:42px"></span>
+            <span style="--h:32px"></span>
+            <span style="--h:48px"></span>
+            <span style="--h:26px"></span>
+            <span style="--h:36px"></span>
+            <span style="--h:20px"></span>
+            <span style="--h:12px"></span>
+          </div>
+          <p id="listeningText" class="listening">READY</p>
+        </div>
+
+        <p class="footer-text" id="footerText">録音ボタンを押して新しいメモを作成できます</p>
+
+        <section class="bottom-section">
+          <div class="memo-header">
+            <h2>最近のメモ</h2>
+            <button id="viewAllButton" class="view-all">すべて見る ›</button>
+          </div>
+          <div class="cards-row" id="cardsRow">
+            <article class="memo-card">
+              <div class="card-top">
+                <span class="badge idea">アイデア</span>
+                <time>14:02</time>
+              </div>
+              <h3>次世代UIコンセプト</h3>
+              <p>音声入力中心のインターフェース設計案。ユーザーの認知負荷を下げるための整理メモ。</p>
+            </article>
+            <article class="memo-card">
+              <div class="card-top">
+                <span class="badge meeting">ミーティング</span>
+                <time>昨日</time>
+              </div>
+              <h3>Q4 プロジェクト会議</h3>
+              <p>進行中タスク、担当、次回アクションを記録。決定事項の確認用サマリー。</p>
+            </article>
+            <article class="memo-card">
+              <div class="card-top">
+                <span class="badge diary">日記</span>
+                <time>10/24</time>
+              </div>
+              <h3>週末の振り返り</h3>
+              <p>良かった点と改善点を簡潔に記録。次週に向けた準備メモ。</p>
+            </article>
+          </div>
+        </section>
+      </section>
+    </main>
+    <script src="./app.js"></script>
+  </body>
+</html>
