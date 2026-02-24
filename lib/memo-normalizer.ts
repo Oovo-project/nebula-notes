@@ -110,12 +110,15 @@ export function toUiMemo(source: SourceMemo): Memo {
   const category = asCategory(source.category ?? undefined);
   const tags = normalizeTags(source.tags, category);
   const points = buildSummaryPoints(source.summaryPoints, source.summary);
+  const parsedDate = asDate(source.createdAt);
+  const iso = Number.isNaN(parsedDate.getTime()) ? undefined : parsedDate.toISOString();
 
   return {
     id: source.id,
     category,
     title: source.title,
     summary: source.summary,
+    createdAt: iso,
     summaryA: toSummaryA(points),
     createdAtLabel: createdAtLabel(source.createdAt),
     pinned: false,

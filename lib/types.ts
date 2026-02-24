@@ -32,6 +32,7 @@ export interface Memo {
   category: MemoCategory;
   title: string;
   summary: string;
+  createdAt?: string;
   summaryA: SummaryA[];
   createdAtLabel: string;
   pinned: boolean;

@@ -5,6 +5,7 @@ import ConstellationCanvas from "@/components/ConstellationCanvas";
 import FilterChips from "@/components/FilterChips";
 import InboxPreviewPanel from "@/components/InboxPreviewPanel";
 import SearchBar from "@/components/SearchBar";
+import TodayMemoList from "@/components/TodayMemoList";
 import { buildConstellationSky } from "@/lib/constellation";
 import { mockInboxMemos, mockSky } from "@/lib/mock";
 import { toUiMemo, type ApiMemoItem } from "@/lib/memo-normalizer";
@@ -13,6 +14,16 @@ import type { Memo, PeriodFilter } from "@/lib/types";
 type MemosResponse = {
   items: ApiMemoItem[];
 };
+
+function isTodayMemo(memo: Memo): boolean {
+  if (memo.createdAt) {
+    const date = new Date(memo.createdAt);
+    if (!Number.isNaN(date.getTime())) {
+      return date.toDateString() === new Date().toDateString();
+    }
+  }
+  return memo.createdAtLabel === "今日" || /^\d{2}:\d{2}$/.test(memo.createdAtLabel);
+}
 
 export default function InboxPage() {
   const [search, setSearch] = useState("");
@@ -73,6 +84,14 @@ export default function InboxPage() {
   const selectedMemo = visibleMemos.find((memo) => memo.id === selectedMemoId) ?? null;
 
   const sky = useMemo(() => buildConstellationSky(visibleMemos, mockSky), [visibleMemos]);
+  const todayMemos = useMemo(() => {
+    return memos
+      .filter((memo) => isTodayMemo(memo))
+      .sort((a, b) => {
+        if (!a.createdAt || !b.createdAt) return 0;
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+      });
+  }, [memos]);
 
   const handleDeleteMemo = async (memoId: string) => {
     if (deletingMemoId) return;
@@ -93,8 +112,8 @@ export default function InboxPage() {
   };
 
   return (
-    <main className="flex-1 max-[1024px]:h-auto max-[1024px]:min-h-0" style={{ height: "900px", minHeight: "900px" }}>
-      <section className="flex h-full min-h-0 max-[1024px]:flex-col">
+    <main className="flex-1 max-[1024px]:h-auto max-[1024px]:min-h-0">
+      <section className="flex min-h-0 max-[1024px]:flex-col" style={{ height: "900px", minHeight: "900px" }}>
         <div className="relative h-full min-h-0 flex-1 max-[1024px]:min-h-[520px]">
           <div className="absolute left-4 right-4 top-4 z-10 space-y-3">
             <div className="flex items-center gap-3">
@@ -114,6 +133,7 @@ export default function InboxPage() {
 
         <InboxPreviewPanel memo={selectedMemo} onDelete={handleDeleteMemo} deleting={selectedMemo?.id === deletingMemoId} />
       </section>
+      <TodayMemoList memos={todayMemos} selectedMemoId={selectedMemoId} onSelectMemo={setSelectedMemoId} />
     </main>
   );
 }
