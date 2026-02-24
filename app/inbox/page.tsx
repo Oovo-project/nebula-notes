@@ -109,8 +109,6 @@ export default function InboxPage() {
             sky={sky}
             selectedMemoId={selectedMemoId}
             onSelectMemo={setSelectedMemoId}
-            onDeleteMemo={handleDeleteMemo}
-            deletingMemoId={deletingMemoId}
           />
         </div>
 

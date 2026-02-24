@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import type { MemoCategory, Sky, SkyStar } from "@/lib/types";
 
 const categoryTone: Record<MemoCategory, string> = {
@@ -33,24 +33,108 @@ function lineStyle(from: SkyStar, to: SkyStar, score = 0.1) {
   };
 }
 
+const DOCK_DISTANCE = 140;
+const DOCK_MAGNIFICATION = 1.38;
+
+function eased(value: number): number {
+  const clamped = Math.max(0, Math.min(1, value));
+  return clamped * clamped * (3 - 2 * clamped);
+}
+
 export default function ConstellationCanvas({
   sky,
   selectedMemoId,
   onSelectMemo,
-  onDeleteMemo,
-  deletingMemoId,
 }: {
   sky: Sky;
   selectedMemoId: string;
   onSelectMemo: (memoId: string) => void;
-  onDeleteMemo?: (memoId: string) => void;
-  deletingMemoId?: string | null;
 }) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const targetPointerRef = useRef<{ x: number; y: number; active: boolean }>({ x: 0, y: 0, active: false });
+  const [bounds, setBounds] = useState({ width: 1, height: 1 });
+  const [pointer, setPointer] = useState<{ x: number; y: number; active: boolean }>({ x: 0, y: 0, active: false });
   const starsById = useMemo(() => new Map(sky.stars.map((star) => [star.id, star])), [sky.stars]);
-  const selectedStar = useMemo(() => sky.stars.find((star) => star.memoId === selectedMemoId) ?? null, [selectedMemoId, sky.stars]);
+
+  const starScaleById = useMemo(() => {
+    const scaleMap = new Map<string, number>();
+
+    sky.stars.forEach((star) => {
+      const cx = (star.x / 100) * bounds.width;
+      const cy = (star.y / 100) * bounds.height;
+      const distance = pointer.active ? Math.hypot(pointer.x - cx, pointer.y - cy) : Number.POSITIVE_INFINITY;
+      const proximity = 1 - distance / DOCK_DISTANCE;
+      const dockScale = 1 + (DOCK_MAGNIFICATION - 1) * eased(proximity);
+      const selectedBoost = star.memoId === selectedMemoId ? 0.08 : 0;
+      scaleMap.set(star.id, pointer.active ? dockScale + selectedBoost : 1 + selectedBoost);
+    });
+
+    return scaleMap;
+  }, [bounds.height, bounds.width, pointer.active, pointer.x, pointer.y, selectedMemoId, sky.stars]);
+
+  useEffect(() => {
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (!entry) return;
+      const { width, height } = entry.contentRect;
+      setBounds({
+        width: Math.max(1, width),
+        height: Math.max(1, height),
+      });
+    });
+    observer.observe(node);
+
+    const animate = () => {
+      setPointer((prev) => {
+        const target = targetPointerRef.current;
+        const alpha = target.active ? 0.18 : 0.12;
+        const nextX = prev.x + (target.x - prev.x) * alpha;
+        const nextY = prev.y + (target.y - prev.y) * alpha;
+        const closeEnough = Math.abs(nextX - target.x) < 0.2 && Math.abs(nextY - target.y) < 0.2;
+        const active = target.active || !closeEnough;
+        return {
+          x: closeEnough ? target.x : nextX,
+          y: closeEnough ? target.y : nextY,
+          active,
+        };
+      });
+      rafRef.current = window.requestAnimationFrame(animate);
+    };
+    rafRef.current = window.requestAnimationFrame(animate);
+
+    return () => {
+      observer.disconnect();
+      if (rafRef.current !== null) {
+        window.cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+  }, []);
+
+  const onMove = (event: MouseEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    targetPointerRef.current = {
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+      active: true,
+    };
+  };
+
+  const onLeave = () => {
+    targetPointerRef.current = { x: 0, y: 0, active: false };
+  };
 
   return (
-    <div className="relative h-full min-h-[820px] w-full overflow-hidden border-r border-[var(--line-soft)] bg-black">
+    <div
+      ref={containerRef}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      className="relative h-full min-h-[820px] w-full overflow-hidden border-r border-[var(--line-soft)] bg-black"
+    >
       <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_38%,#050b16_0%,#02050b_48%,#000000_100%)]" />
       <div
         className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center opacity-[0.28]"
@@ -100,13 +184,14 @@ export default function ConstellationCanvas({
 
       {sky.stars.map((star) => {
         const selected = star.memoId === selectedMemoId;
-        const hitSize = Math.max(star.size + 18, 28);
+        const scale = starScaleById.get(star.id) ?? 1;
+        const hitSize = Math.max(star.size + 20, 30);
         return (
           <button
             key={star.id}
             type="button"
             onClick={() => onSelectMemo(star.memoId)}
-            className="absolute z-30 rounded-full transition hover:scale-[1.04]"
+            className="absolute z-30 rounded-full"
             style={{
               left: `${star.x}%`,
               top: `${star.y}%`,
@@ -118,38 +203,18 @@ export default function ConstellationCanvas({
             title="星メモを選択"
           >
             <span
-              className={`pointer-events-none absolute left-1/2 top-1/2 rounded-full transition ${
-                selected
-                  ? "bg-[#8ab4f8] shadow-[0_0_16px_rgba(138,180,248,0.45)]"
-                  : "bg-[#8ab4f8dd] shadow-[0_0_10px_rgba(138,180,248,0.33)]"
+              className={`pointer-events-none absolute left-1/2 top-1/2 rounded-full transition-transform duration-100 ease-out ${
+                selected ? "bg-[#8ab4f8] shadow-[0_0_18px_rgba(138,180,248,0.5)]" : "bg-[#8ab4f8dd] shadow-[0_0_10px_rgba(138,180,248,0.33)]"
               }`}
               style={{
                 width: `${star.size}px`,
                 height: `${star.size}px`,
-                transform: "translate(-50%, -50%)",
+                transform: `translate(-50%, -50%) scale(${scale})`,
               }}
             />
           </button>
         );
       })}
-
-      {selectedStar && onDeleteMemo ? (
-        <button
-          type="button"
-          onClick={() => onDeleteMemo(selectedStar.memoId)}
-          disabled={deletingMemoId === selectedStar.memoId}
-          className="absolute z-40 inline-flex h-7 w-7 items-center justify-center rounded-full border border-[#ef444466] bg-[#0a0a0fcc] text-[13px] text-[#fca5a5] transition hover:bg-[#1a0d12] disabled:cursor-not-allowed disabled:opacity-60"
-          style={{
-            left: `calc(${selectedStar.x}% + 16px)`,
-            top: `calc(${selectedStar.y}% - 16px)`,
-            transform: "translate(-50%, -50%)",
-          }}
-          aria-label="星メモを削除"
-          title="この星を削除"
-        >
-          ×
-        </button>
-      ) : null}
     </div>
   );
 }
