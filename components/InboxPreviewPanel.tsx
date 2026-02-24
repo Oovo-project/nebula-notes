@@ -18,7 +18,15 @@ function FactIcon({ index }: { index: number }) {
   return <span className="text-[12px] text-[#8ab4f8]">↗</span>;
 }
 
-export default function InboxPreviewPanel({ memo }: { memo: Memo | null }) {
+export default function InboxPreviewPanel({
+  memo,
+  onDelete,
+  deleting,
+}: {
+  memo: Memo | null;
+  onDelete?: (memoId: string) => void;
+  deleting?: boolean;
+}) {
   if (!memo) {
     return (
       <aside className="h-full w-[400px] border-l border-[var(--line-soft)] bg-[var(--surface-panel)] max-[1024px]:w-full max-[1024px]:border-l-0 max-[1024px]:border-t">
@@ -71,6 +79,16 @@ export default function InboxPreviewPanel({ memo }: { memo: Memo | null }) {
         >
           詳細を開く →
         </Link>
+        {onDelete ? (
+          <button
+            type="button"
+            onClick={() => onDelete(memo.id)}
+            disabled={deleting}
+            className="inline-flex h-9 w-fit items-center rounded-[9999px] border border-[#ef444466] bg-[#2a1218] px-5 text-[13px] font-medium text-[#fca5a5] transition hover:bg-[#3a1620] disabled:cursor-not-allowed disabled:opacity-60"
+          >
+            {deleting ? "削除中..." : "この星メモを削除"}
+          </button>
+        ) : null}
       </div>
     </aside>
   );

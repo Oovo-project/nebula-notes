@@ -21,6 +21,7 @@ export default function InboxPage() {
   const [memos, setMemos] = useState<Memo[]>(mockInboxMemos);
   const [loadError, setLoadError] = useState<string>("");
   const [selectedMemoId, setSelectedMemoId] = useState<string>("");
+  const [deletingMemoId, setDeletingMemoId] = useState<string | null>(null);
 
   useEffect(() => {
     let ignore = false;
@@ -73,6 +74,24 @@ export default function InboxPage() {
 
   const sky = useMemo(() => buildConstellationSky(visibleMemos, mockSky), [visibleMemos]);
 
+  const handleDeleteMemo = async (memoId: string) => {
+    if (deletingMemoId) return;
+    setDeletingMemoId(memoId);
+    setLoadError("");
+    try {
+      const response = await fetch(`/api/memos/${memoId}`, { method: "DELETE" });
+      if (!response.ok && response.status !== 404) {
+        throw new Error("delete failed");
+      }
+      setMemos((prev) => prev.filter((memo) => memo.id !== memoId));
+      setSelectedMemoId((prev) => (prev === memoId ? "" : prev));
+    } catch {
+      setLoadError("削除に失敗しました。時間をおいて再試行してください。");
+    } finally {
+      setDeletingMemoId(null);
+    }
+  };
+
   return (
     <main className="flex-1 max-[1024px]:h-auto max-[1024px]:min-h-0" style={{ height: "900px", minHeight: "900px" }}>
       <section className="flex h-full min-h-0 max-[1024px]:flex-col">
@@ -86,10 +105,16 @@ export default function InboxPage() {
             {loadError && <p className="text-[11px] text-[#f59e0b]">{loadError}</p>}
           </div>
 
-          <ConstellationCanvas sky={sky} selectedMemoId={selectedMemoId} onSelectMemo={setSelectedMemoId} />
+          <ConstellationCanvas
+            sky={sky}
+            selectedMemoId={selectedMemoId}
+            onSelectMemo={setSelectedMemoId}
+            onDeleteMemo={handleDeleteMemo}
+            deletingMemoId={deletingMemoId}
+          />
         </div>
 
-        <InboxPreviewPanel memo={selectedMemo} />
+        <InboxPreviewPanel memo={selectedMemo} onDelete={handleDeleteMemo} deleting={selectedMemo?.id === deletingMemoId} />
       </section>
     </main>
   );

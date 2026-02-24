@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useMemo } from "react";
-import type { MemoCategory, Sky, SkyLink, SkyStar } from "@/lib/types";
+import type { MemoCategory, Sky, SkyStar } from "@/lib/types";
 
 const categoryTone: Record<MemoCategory, string> = {
   アイデア: "text-[#8ab4f8b3]",
@@ -37,12 +37,17 @@ export default function ConstellationCanvas({
   sky,
   selectedMemoId,
   onSelectMemo,
+  onDeleteMemo,
+  deletingMemoId,
 }: {
   sky: Sky;
   selectedMemoId: string;
   onSelectMemo: (memoId: string) => void;
+  onDeleteMemo?: (memoId: string) => void;
+  deletingMemoId?: string | null;
 }) {
   const starsById = useMemo(() => new Map(sky.stars.map((star) => [star.id, star])), [sky.stars]);
+  const selectedStar = useMemo(() => sky.stars.find((star) => star.memoId === selectedMemoId) ?? null, [selectedMemoId, sky.stars]);
 
   return (
     <div className="relative h-full min-h-[820px] w-full overflow-hidden border-r border-[var(--line-soft)] bg-black">
@@ -89,39 +94,62 @@ export default function ConstellationCanvas({
           const from = starsById.get(line.from);
           const to = starsById.get(line.to);
           if (!from || !to) return null;
-          return (
-            <span
-              key={line.id}
-              className="absolute bg-[#8ab4f826] shadow-[0_0_6px_rgba(138,180,248,0.18)]"
-              style={lineStyle(from, to, line.score)}
-            />
-          );
+          return <span key={line.id} className="absolute bg-[#8ab4f826] shadow-[0_0_6px_rgba(138,180,248,0.18)]" style={lineStyle(from, to, line.score)} />;
         })}
       </div>
 
       {sky.stars.map((star) => {
         const selected = star.memoId === selectedMemoId;
+        const hitSize = Math.max(star.size + 18, 28);
         return (
           <button
             key={star.id}
             type="button"
             onClick={() => onSelectMemo(star.memoId)}
-            className={`absolute z-30 rounded-full transition ${
-              selected
-                ? "bg-[#8ab4f8] shadow-[0_0_16px_rgba(138,180,248,0.4)]"
-                : "bg-[#8ab4f8dd] shadow-[0_0_10px_rgba(138,180,248,0.3)] hover:scale-110 hover:shadow-[0_0_14px_rgba(138,180,248,0.45)]"
-            }`}
+            className="absolute z-30 rounded-full transition hover:scale-[1.04]"
             style={{
               left: `${star.x}%`,
               top: `${star.y}%`,
-              width: `${star.size}px`,
-              height: `${star.size}px`,
+              width: `${hitSize}px`,
+              height: `${hitSize}px`,
               transform: "translate(-50%, -50%)",
             }}
             aria-label={`${star.category} のメモ`}
-          />
+            title="星メモを選択"
+          >
+            <span
+              className={`pointer-events-none absolute left-1/2 top-1/2 rounded-full transition ${
+                selected
+                  ? "bg-[#8ab4f8] shadow-[0_0_16px_rgba(138,180,248,0.45)]"
+                  : "bg-[#8ab4f8dd] shadow-[0_0_10px_rgba(138,180,248,0.33)]"
+              }`}
+              style={{
+                width: `${star.size}px`,
+                height: `${star.size}px`,
+                transform: "translate(-50%, -50%)",
+              }}
+            />
+          </button>
         );
       })}
+
+      {selectedStar && onDeleteMemo ? (
+        <button
+          type="button"
+          onClick={() => onDeleteMemo(selectedStar.memoId)}
+          disabled={deletingMemoId === selectedStar.memoId}
+          className="absolute z-40 inline-flex h-7 w-7 items-center justify-center rounded-full border border-[#ef444466] bg-[#0a0a0fcc] text-[13px] text-[#fca5a5] transition hover:bg-[#1a0d12] disabled:cursor-not-allowed disabled:opacity-60"
+          style={{
+            left: `calc(${selectedStar.x}% + 16px)`,
+            top: `calc(${selectedStar.y}% - 16px)`,
+            transform: "translate(-50%, -50%)",
+          }}
+          aria-label="星メモを削除"
+          title="この星を削除"
+        >
+          ×
+        </button>
+      ) : null}
     </div>
   );
 }
