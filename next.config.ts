@@ -1,7 +1,9 @@
 import type { NextConfig } from "next";
+import { PHASE_DEVELOPMENT_SERVER } from "next/constants";
 
-const nextConfig: NextConfig = {
-  distDir: ".next-runtime",
-};
-
-export default nextConfig;
+export default function nextConfig(phase: string): NextConfig {
+  const isDevServer = phase === PHASE_DEVELOPMENT_SERVER;
+  return {
+    distDir: isDevServer ? ".next-dev" : ".next",
+  };
+}

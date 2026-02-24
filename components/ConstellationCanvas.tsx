@@ -133,7 +133,7 @@ export default function ConstellationCanvas({
       ref={containerRef}
       onMouseMove={onMove}
       onMouseLeave={onLeave}
-      className="relative h-full min-h-[820px] w-full overflow-hidden border-r border-[var(--line-soft)] bg-black"
+      className="relative z-0 h-full min-h-[820px] w-full overflow-hidden border-r border-[var(--line-soft)] bg-black"
     >
       <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_38%,#050b16_0%,#02050b_48%,#000000_100%)]" />
       <div

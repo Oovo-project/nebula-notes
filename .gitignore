@@ -1,5 +1,6 @@
 node_modules
 .next-runtime
 .next
+.next-dev
 dev.out
 dev.err

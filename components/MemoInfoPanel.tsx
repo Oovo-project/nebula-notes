@@ -1,6 +1,20 @@
 ﻿import type { Memo } from "@/lib/types";
 
-export default function MemoInfoPanel({ memo }: { memo: Memo }) {
+export default function MemoInfoPanel({
+  memo,
+  onEdit,
+  onShare,
+  onDelete,
+  shareLabel,
+  deleting,
+}: {
+  memo: Memo;
+  onEdit?: () => void;
+  onShare?: () => void;
+  onDelete?: () => void;
+  shareLabel?: string;
+  deleting?: boolean;
+}) {
   return (
     <aside className="w-[280px] space-y-2 max-[980px]:w-full">
       <div className="rounded-[12px] border border-[var(--line-soft)] bg-white/5 p-5">
@@ -23,14 +37,27 @@ export default function MemoInfoPanel({ memo }: { memo: Memo }) {
       </div>
 
       <div className="space-y-2">
-        <button type="button" className="h-10 w-full rounded-[10px] border border-[var(--line-soft)] bg-white/5 text-[13px] font-medium text-[var(--text-main)]">
+        <button
+          type="button"
+          onClick={onEdit}
+          className="h-10 w-full rounded-[10px] border border-[var(--line-soft)] bg-white/5 text-[13px] font-medium text-[var(--text-main)] transition hover:bg-white/10"
+        >
           編集
         </button>
-        <button type="button" className="h-10 w-full rounded-[10px] border border-[var(--line-soft)] bg-white/5 text-[13px] font-medium text-[var(--text-main)]">
-          共有
+        <button
+          type="button"
+          onClick={onShare}
+          className="h-10 w-full rounded-[10px] border border-[var(--line-soft)] bg-white/5 text-[13px] font-medium text-[var(--text-main)] transition hover:bg-white/10"
+        >
+          {shareLabel ?? "共有"}
         </button>
-        <button type="button" className="h-10 w-full rounded-[10px] text-[13px] font-medium text-[#ef444466]">
-          削除
+        <button
+          type="button"
+          onClick={onDelete}
+          disabled={deleting}
+          className="h-10 w-full rounded-[10px] text-[13px] font-medium text-[#ef4444aa] transition hover:text-[#ef4444] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {deleting ? "削除中..." : "削除"}
         </button>
       </div>
     </aside>

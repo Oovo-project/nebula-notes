@@ -115,7 +115,7 @@ export default function InboxPage() {
     <main className="flex-1 max-[1024px]:h-auto max-[1024px]:min-h-0">
       <section className="flex min-h-0 max-[1024px]:flex-col" style={{ height: "900px", minHeight: "900px" }}>
         <div className="relative h-full min-h-0 flex-1 max-[1024px]:min-h-[520px]">
-          <div className="absolute left-4 right-4 top-4 z-10 space-y-3">
+          <div className="absolute left-4 right-4 top-4 z-50 space-y-3 pointer-events-auto">
             <div className="flex items-center gap-3">
               <SearchBar value={search} onChange={setSearch} />
               <FilterChips items={mockSky.periods} active={period} size="sm" onSelect={(value) => setPeriod(value as PeriodFilter)} />

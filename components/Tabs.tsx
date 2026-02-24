@@ -1,4 +1,12 @@
-﻿export default function Tabs({ tabs, active }: { tabs: string[]; active: string }) {
+﻿export default function Tabs({
+  tabs,
+  active,
+  onSelect,
+}: {
+  tabs: string[];
+  active: string;
+  onSelect?: (tab: string) => void;
+}) {
   return (
     <div className="w-full">
       <div className="flex h-9 items-center gap-2">
@@ -8,8 +16,9 @@
             <button
               key={tab}
               type="button"
-              className={`inline-flex h-9 items-center px-5 text-[13px] ${
-                isActive ? "border-b-2 border-[var(--text-accent)] text-[var(--text-accent)]" : "text-[var(--text-dim)]"
+              onClick={() => onSelect?.(tab)}
+              className={`inline-flex h-9 items-center px-5 text-[13px] transition ${
+                isActive ? "border-b-2 border-[var(--text-accent)] text-[var(--text-accent)]" : "text-[var(--text-dim)] hover:text-[var(--text-muted)]"
               }`}
             >
               {tab}
