@@ -113,7 +113,7 @@ export default function InboxPage() {
 
   return (
     <main className="flex-1 max-[1024px]:h-auto max-[1024px]:min-h-0">
-      <section className="flex min-h-0 max-[1024px]:flex-col" style={{ height: "900px", minHeight: "900px" }}>
+      <section className="flex h-[900px] min-h-[900px] max-[1024px]:h-auto max-[1024px]:min-h-0 max-[1024px]:flex-col">
         <div className="relative h-full min-h-0 flex-1 max-[1024px]:min-h-[520px]">
           <div className="absolute left-4 right-4 top-4 z-50 space-y-3 pointer-events-auto">
             <div className="flex items-center gap-3">

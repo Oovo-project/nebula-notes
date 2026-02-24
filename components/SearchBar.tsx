@@ -8,6 +8,8 @@ export default function SearchBar({ value, onChange }: { value: string; onChange
         <path d="M13.5 13.5 17 17" stroke="#6b7280" strokeWidth="1.4" strokeLinecap="round" />
       </svg>
       <input
+        id="memo-search"
+        name="memoSearch"
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder="メモを検索..."

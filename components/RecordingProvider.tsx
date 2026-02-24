@@ -27,6 +27,7 @@ export function RecordingProvider({ children }: { children: React.ReactNode }) {
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [refreshKey, setRefreshKey] = useState<number>(0);
+  const [recordingSupported, setRecordingSupported] = useState<boolean>(true);
 
   const recorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
@@ -34,7 +35,10 @@ export function RecordingProvider({ children }: { children: React.ReactNode }) {
   const timerRef = useRef<number | null>(null);
   const statusDelayRef = useRef<number | null>(null);
 
-  const recordingSupported = typeof window !== "undefined" && !!window.MediaRecorder && !!navigator.mediaDevices?.getUserMedia;
+  useEffect(() => {
+    const supported = typeof window !== "undefined" && !!window.MediaRecorder && !!navigator.mediaDevices?.getUserMedia;
+    setRecordingSupported(supported);
+  }, []);
 
   const clearTimer = useCallback(() => {
     if (timerRef.current !== null) {
