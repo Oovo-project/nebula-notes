@@ -45,19 +45,35 @@ export default function ConstellationCanvas({
   const starsById = useMemo(() => new Map(sky.stars.map((star) => [star.id, star])), [sky.stars]);
 
   return (
-    <div className="relative h-full w-full overflow-hidden border-r border-[var(--line-soft)] bg-black">
-      <div className="absolute inset-0 bg-cover bg-center opacity-70" style={{ backgroundImage: `url(${sky.backgroundImage})` }} />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_42%,rgba(138,180,248,0.12),rgba(0,0,0,0)_55%)]" />
+    <div className="relative h-full min-h-[820px] w-full overflow-hidden border-r border-[var(--line-soft)] bg-black">
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_38%,#050b16_0%,#02050b_48%,#000000_100%)]" />
+      <div
+        className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center opacity-[0.28]"
+        style={{ backgroundImage: `url(${sky.backgroundImage})` }}
+      />
+      <div
+        className="pointer-events-none absolute inset-0 z-0 opacity-70"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, rgba(171,208,255,0.3) 0.6px, transparent 1px), radial-gradient(circle, rgba(138,180,248,0.22) 0.5px, transparent 0.9px)",
+          backgroundSize: "150px 150px, 110px 110px",
+          backgroundPosition: "0 0, 38px 64px",
+        }}
+      />
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.28)_0%,rgba(0,0,0,0.52)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_at_50%_55%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.46)_80%)]" />
 
       {sky.zones.map((zone) => (
         <div
           key={zone.id}
-          className="absolute rounded-full border border-[#8ab4f80d] bg-[#8ab4f808]"
+          className="absolute z-10 rounded-full"
           style={{
             left: `${zone.x}%`,
             top: `${zone.y}%`,
             width: `${zone.size}%`,
             height: `${zone.size}%`,
+            border: "0.5px solid #8ab4f80d",
+            background: "#8ab4f808",
             transform: "translate(-50%, -50%)",
           }}
         >
@@ -68,7 +84,7 @@ export default function ConstellationCanvas({
         </div>
       ))}
 
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 z-20">
         {sky.links.map((line) => {
           const from = starsById.get(line.from);
           const to = starsById.get(line.to);
@@ -90,10 +106,10 @@ export default function ConstellationCanvas({
             key={star.id}
             type="button"
             onClick={() => onSelectMemo(star.memoId)}
-            className={`absolute rounded-full transition ${
+            className={`absolute z-30 rounded-full transition ${
               selected
-                ? "bg-[#8ab4f8] shadow-[0_0_20px_rgba(138,180,248,0.6)]"
-                : "bg-[#8ab4f8cc] shadow-[0_0_12px_rgba(138,180,248,0.35)] hover:scale-110 hover:shadow-[0_0_18px_rgba(138,180,248,0.48)]"
+                ? "bg-[#8ab4f8] shadow-[0_0_16px_rgba(138,180,248,0.4)]"
+                : "bg-[#8ab4f8dd] shadow-[0_0_10px_rgba(138,180,248,0.3)] hover:scale-110 hover:shadow-[0_0_14px_rgba(138,180,248,0.45)]"
             }`}
             style={{
               left: `${star.x}%`,

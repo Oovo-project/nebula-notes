@@ -1,10 +1,10 @@
-﻿import type { Memo, Sky, SkyLink, SkyStar, SkyZone } from "@/lib/types";
+﻿import type { Memo, MemoCategory, Sky, SkyLink, SkyStar, SkyZone } from "@/lib/types";
 
-const TOKEN_PATTERN = /[a-z0-9]+|[一-龠々〆〤ぁ-んァ-ヴー]{2,}/giu;
-const STOP_WORDS = new Set(["について", "こと", "ため", "する", "した", "いる", "ある", "です", "ます", "から", "まで"]);
+const TOKEN_PATTERN = /[a-z0-9]+|[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}ー]{2,}/giu;
+const STOP_WORDS = new Set(["about", "this", "that", "with", "from", "into", "todo", "memo"]);
 
 type Vec2 = { x: number; y: number };
-type LinkRow = SkyLink & { score: number };
+type LinkRow = { id: string; from: string; to: string; score: number };
 
 function hash(seed: string): number {
   let h = 2166136261;
@@ -48,9 +48,59 @@ function getZoneRadius(zone: SkyZone): number {
   return zone.size / 2;
 }
 
+function enforceMinDistance(
+  positions: Map<string, Vec2>,
+  ids: string[],
+  center: Vec2,
+  zoneRadius: number,
+  minDistance: number
+) {
+  for (let i = 0; i < ids.length; i += 1) {
+    const idA = ids[i];
+    const a = positions.get(idA);
+    if (!a) continue;
+
+    for (let j = i + 1; j < ids.length; j += 1) {
+      const idB = ids[j];
+      const b = positions.get(idB);
+      if (!b) continue;
+
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const dist = Math.max(0.0001, Math.hypot(dx, dy));
+      if (dist >= minDistance) continue;
+
+      const overlap = (minDistance - dist) * 0.5;
+      const nx = dx / dist;
+      const ny = dy / dist;
+
+      a.x -= nx * overlap;
+      a.y -= ny * overlap;
+      b.x += nx * overlap;
+      b.y += ny * overlap;
+    }
+  }
+
+  ids.forEach((id) => {
+    const pos = positions.get(id);
+    if (!pos) return;
+
+    const dx = pos.x - center.x;
+    const dy = pos.y - center.y;
+    const dist = Math.hypot(dx, dy);
+    if (dist > zoneRadius) {
+      const unitX = dx / dist;
+      const unitY = dy / dist;
+      pos.x = center.x + unitX * zoneRadius;
+      pos.y = center.y + unitY * zoneRadius;
+    }
+  });
+}
+
 function positionNodesInZone(memos: Memo[], zone: SkyZone, links: LinkRow[]): SkyStar[] {
   const center: Vec2 = { x: zone.x, y: zone.y };
   const zoneRadius = getZoneRadius(zone) * 0.88;
+  const minDistance = clamp(2.2 + memos.length * 0.08, 2.2, 4.4);
 
   const positions = new Map<string, Vec2>();
   const velocity = new Map<string, Vec2>();
@@ -67,12 +117,12 @@ function positionNodesInZone(memos: Memo[], zone: SkyZone, links: LinkRow[]): Sk
 
   const desiredByPair = new Map<string, number>();
   links.forEach((link) => {
-    const desired = zoneRadius * (0.9 - link.score * 0.62);
-    desiredByPair.set(`${link.from}::${link.to}`, clamp(desired, zoneRadius * 0.22, zoneRadius * 0.9));
-    desiredByPair.set(`${link.to}::${link.from}`, clamp(desired, zoneRadius * 0.22, zoneRadius * 0.9));
+    const desired = zoneRadius * (0.96 - link.score * 0.46);
+    desiredByPair.set(`${link.from}::${link.to}`, clamp(desired, zoneRadius * 0.36, zoneRadius * 0.96));
+    desiredByPair.set(`${link.to}::${link.from}`, clamp(desired, zoneRadius * 0.36, zoneRadius * 0.96));
   });
 
-  for (let step = 0; step < 100; step += 1) {
+  for (let step = 0; step < 140; step += 1) {
     for (let i = 0; i < memos.length; i += 1) {
       const a = memos[i];
       const posA = positions.get(a.id)!;
@@ -86,7 +136,7 @@ function positionNodesInZone(memos: Memo[], zone: SkyZone, links: LinkRow[]): Sk
         const dy = posB.y - posA.y;
         const dist = Math.max(0.001, Math.hypot(dx, dy));
 
-        const repulsion = 0.012 / (dist * dist);
+        const repulsion = 0.22 / (dist * dist);
         const rx = (dx / dist) * repulsion;
         const ry = (dy / dist) * repulsion;
 
@@ -107,8 +157,8 @@ function positionNodesInZone(memos: Memo[], zone: SkyZone, links: LinkRow[]): Sk
       const dx = posB.x - posA.x;
       const dy = posB.y - posA.y;
       const dist = Math.max(0.001, Math.hypot(dx, dy));
-      const target = desiredByPair.get(`${link.from}::${link.to}`) ?? zoneRadius * 0.62;
-      const spring = (dist - target) * (0.032 + link.score * 0.015);
+      const target = desiredByPair.get(`${link.from}::${link.to}`) ?? zoneRadius * 0.78;
+      const spring = (dist - target) * (0.013 + link.score * 0.012);
       const sx = (dx / dist) * spring;
       const sy = (dy / dist) * spring;
 
@@ -124,11 +174,11 @@ function positionNodesInZone(memos: Memo[], zone: SkyZone, links: LinkRow[]): Sk
       const pos = positions.get(memo.id)!;
       const vel = velocity.get(memo.id)!;
 
-      vel.x += (center.x - pos.x) * 0.01;
-      vel.y += (center.y - pos.y) * 0.01;
+      vel.x += (center.x - pos.x) * 0.0018;
+      vel.y += (center.y - pos.y) * 0.0018;
 
-      vel.x *= 0.82;
-      vel.y *= 0.82;
+      vel.x *= 0.88;
+      vel.y *= 0.88;
 
       pos.x += vel.x;
       pos.y += vel.y;
@@ -143,6 +193,16 @@ function positionNodesInZone(memos: Memo[], zone: SkyZone, links: LinkRow[]): Sk
         pos.x = center.x + unitX * zoneRadius;
         pos.y = center.y + unitY * zoneRadius;
       }
+    }
+
+    if (step % 4 === 0) {
+      enforceMinDistance(
+        positions,
+        memos.map((memo) => memo.id),
+        center,
+        zoneRadius,
+        minDistance
+      );
     }
   }
 
@@ -162,7 +222,7 @@ function positionNodesInZone(memos: Memo[], zone: SkyZone, links: LinkRow[]): Sk
       category: memo.category,
       x: clamp(pos.x, 4, 96),
       y: clamp(pos.y, 8, 92),
-      size: clamp(5 + d * 0.9 + (memo.pinned ? 1 : 0), 5, 9),
+      size: clamp(10 + d * 1.2 + (memo.pinned ? 1 : 0), 10, 14),
     };
   });
 }
@@ -191,8 +251,8 @@ function buildCategoryLinks(memos: Memo[]): LinkRow[] {
         if (!current || current.score < score) {
           links.set(key, {
             id: `link-${pair[0]}-${pair[1]}`,
-            from: `star-${pair[0]}`,
-            to: `star-${pair[1]}`,
+            from: pair[0],
+            to: pair[1],
             score,
           });
         }
@@ -205,8 +265,8 @@ function buildCategoryLinks(memos: Memo[]): LinkRow[] {
       const to = memos[i + 1].id;
       links.set(`${from}::${to}`, {
         id: `link-${from}-${to}`,
-        from: `star-${from}`,
-        to: `star-${to}`,
+        from,
+        to,
         score: 0.06,
       });
     }
@@ -215,24 +275,58 @@ function buildCategoryLinks(memos: Memo[]): LinkRow[] {
   return Array.from(links.values());
 }
 
+function resolveZoneCategory(category: MemoCategory, available: Set<MemoCategory>): MemoCategory {
+  if (available.has(category)) return category;
+
+  const fallbackMap: Partial<Record<MemoCategory, MemoCategory>> = {
+    ミーティング: "やること",
+    日記: "メモ",
+    調べもの: "学び",
+    "買い物・ごはん": "やること",
+    "約束・連絡": "やること",
+  };
+
+  const mapped = fallbackMap[category];
+  if (mapped && available.has(mapped)) return mapped;
+  if (available.has("メモ")) return "メモ";
+
+  const ordered = Array.from(available);
+  return ordered[0] ?? category;
+}
+
 export function buildConstellationSky(memos: Memo[], baseSky: Sky): Sky {
+  const availableCategories = new Set(baseSky.zones.map((zone) => zone.category));
+  const grouped = new Map<MemoCategory, Memo[]>();
+
+  memos.forEach((memo) => {
+    const zoneCategory = resolveZoneCategory(memo.category, availableCategories);
+    grouped.set(zoneCategory, [...(grouped.get(zoneCategory) ?? []), memo]);
+  });
+
   const zones = baseSky.zones.map((zone) => ({
     ...zone,
-    count: memos.filter((memo) => memo.category === zone.category).length,
+    count: grouped.get(zone.category)?.length ?? 0,
   }));
 
   const stars: SkyStar[] = [];
-  const links: LinkRow[] = [];
+  const links: SkyLink[] = [];
 
   zones.forEach((zone) => {
-    const zoneMemos = memos.filter((memo) => memo.category === zone.category);
+    const zoneMemos = grouped.get(zone.category) ?? [];
     if (zoneMemos.length === 0) return;
 
     const zoneLinks = buildCategoryLinks(zoneMemos);
     const zoneStars = positionNodesInZone(zoneMemos, zone, zoneLinks);
 
     stars.push(...zoneStars);
-    links.push(...zoneLinks);
+    links.push(
+      ...zoneLinks.map((link) => ({
+        id: link.id,
+        from: `star-${link.from}`,
+        to: `star-${link.to}`,
+        score: link.score,
+      }))
+    );
   });
 
   return {
