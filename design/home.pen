@@ -2144,7 +2144,7 @@
                   "fill": {
                     "type": "image",
                     "enabled": true,
-                    "url": "./images/generated-1771596647078.png",
+                    "url": "./images/generated-1771839286901.png",
                     "mode": "fill"
                   },
                   "layout": "none"
@@ -2534,299 +2534,9 @@
                 },
                 {
                   "type": "ellipse",
-                  "id": "7OpXR",
-                  "x": 160,
-                  "y": 260,
-                  "name": "Star - Active",
-                  "fill": "#8ab4f8ff",
-                  "width": 8,
-                  "height": 8,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#8ab4f84d",
-                    "blur": 12,
-                    "spread": 2
-                  }
-                },
-                {
-                  "type": "ellipse",
-                  "id": "5brYg",
-                  "x": 200,
-                  "y": 310,
-                  "name": "Star",
-                  "fill": "#8ab4f8cc",
-                  "width": 6,
-                  "height": 6,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#8ab4f833",
-                    "blur": 8,
-                    "spread": 1
-                  }
-                },
-                {
-                  "type": "ellipse",
-                  "id": "PFEme",
-                  "x": 140,
-                  "y": 340,
-                  "name": "Star",
-                  "fill": "#8ab4f899",
-                  "width": 5,
-                  "height": 5
-                },
-                {
-                  "type": "ellipse",
-                  "id": "9nduQ",
-                  "x": 240,
-                  "y": 240,
-                  "name": "Star",
-                  "fill": "#8ab4f8b3",
-                  "width": 7,
-                  "height": 7,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#8ab4f840",
-                    "blur": 10,
-                    "spread": 1
-                  }
-                },
-                {
-                  "type": "ellipse",
-                  "id": "tSsJO",
-                  "x": 180,
-                  "y": 380,
-                  "name": "Star",
-                  "fill": "#8ab4f866",
-                  "width": 4,
-                  "height": 4
-                },
-                {
-                  "type": "ellipse",
-                  "id": "RqJKZ",
-                  "x": 440,
-                  "y": 370,
-                  "name": "Star",
-                  "fill": "#8ab4f8cc",
-                  "width": 7,
-                  "height": 7,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#8ab4f840",
-                    "blur": 10,
-                    "spread": 1
-                  }
-                },
-                {
-                  "type": "ellipse",
-                  "id": "oEWF8",
-                  "x": 490,
-                  "y": 420,
-                  "name": "Star",
-                  "fill": "#8ab4f899",
-                  "width": 5,
-                  "height": 5
-                },
-                {
-                  "type": "ellipse",
-                  "id": "OgZcq",
-                  "x": 410,
-                  "y": 440,
-                  "name": "Star",
-                  "fill": "#8ab4f8b3",
-                  "width": 6,
-                  "height": 6
-                },
-                {
-                  "type": "ellipse",
-                  "id": "V6WfQ",
-                  "x": 520,
-                  "y": 380,
-                  "name": "Star",
-                  "fill": "#8ab4f866",
-                  "width": 4,
-                  "height": 4
-                },
-                {
-                  "type": "ellipse",
-                  "id": "ib3uS",
-                  "x": 650,
-                  "y": 220,
-                  "name": "Star",
-                  "fill": "#8ab4f8e6",
-                  "width": 8,
-                  "height": 8,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#8ab4f84d",
-                    "blur": 14,
-                    "spread": 2
-                  }
-                },
-                {
-                  "type": "ellipse",
-                  "id": "XwZ4c",
-                  "x": 700,
-                  "y": 270,
-                  "name": "Star",
-                  "fill": "#8ab4f899",
-                  "width": 5,
-                  "height": 5
-                },
-                {
-                  "type": "ellipse",
-                  "id": "qGhWH",
-                  "x": 640,
-                  "y": 290,
-                  "name": "Star",
-                  "fill": "#8ab4f8b3",
-                  "width": 6,
-                  "height": 6
-                },
-                {
-                  "type": "ellipse",
-                  "id": "0nw0v",
-                  "x": 320,
-                  "y": 570,
-                  "name": "Star",
-                  "fill": "#8ab4f8b3",
-                  "width": 6,
-                  "height": 6
-                },
-                {
-                  "type": "ellipse",
-                  "id": "SW6tQ",
-                  "x": 310,
-                  "y": 590,
-                  "name": "Star",
-                  "fill": "#8ab4f880",
-                  "width": 5,
-                  "height": 5
-                },
-                {
-                  "type": "ellipse",
-                  "id": "v3uWd",
-                  "x": 390,
-                  "y": 580,
-                  "name": "Star",
-                  "fill": "#8ab4f8cc",
-                  "width": 7,
-                  "height": 7,
-                  "effect": {
-                    "type": "shadow",
-                    "shadowType": "outer",
-                    "color": "#8ab4f840",
-                    "blur": 10,
-                    "spread": 1
-                  }
-                },
-                {
-                  "type": "ellipse",
-                  "id": "vGqF0",
-                  "x": 720,
-                  "y": 480,
-                  "name": "Star",
-                  "fill": "#8ab4f8b3",
-                  "width": 6,
-                  "height": 6
-                },
-                {
-                  "type": "ellipse",
-                  "id": "uBBcB",
-                  "x": 760,
-                  "y": 520,
-                  "name": "Star",
-                  "fill": "#8ab4f899",
-                  "width": 5,
-                  "height": 5
-                },
-                {
-                  "type": "line",
-                  "id": "cqiOT",
-                  "x": 164,
-                  "y": 264,
-                  "name": "Constellation Line",
-                  "width": 40,
-                  "height": 50,
-                  "stroke": {
-                    "thickness": 0.5,
-                    "fill": "#8ab4f826"
-                  }
-                },
-                {
-                  "type": "line",
-                  "id": "nPeJq",
-                  "x": 164,
-                  "y": 264,
-                  "name": "Constellation Line",
-                  "width": 80,
-                  "height": 20,
-                  "stroke": {
-                    "thickness": 0.5,
-                    "fill": "#8ab4f826"
-                  }
-                },
-                {
-                  "type": "line",
-                  "id": "l2TlO",
-                  "x": 444,
-                  "y": 374,
-                  "name": "Constellation Line",
-                  "width": 50,
-                  "height": 50,
-                  "stroke": {
-                    "thickness": 0.5,
-                    "fill": "#8ab4f826"
-                  }
-                },
-                {
-                  "type": "line",
-                  "id": "nGwxC",
-                  "x": 414,
-                  "y": 374,
-                  "name": "Constellation Line",
-                  "width": 40,
-                  "height": 70,
-                  "stroke": {
-                    "thickness": 0.5,
-                    "fill": "#8ab4f826"
-                  }
-                },
-                {
-                  "type": "line",
-                  "id": "p3BOy",
-                  "x": 654,
-                  "y": 224,
-                  "name": "Constellation Line",
-                  "width": 50,
-                  "height": 50,
-                  "stroke": {
-                    "thickness": 0.5,
-                    "fill": "#8ab4f826"
-                  }
-                },
-                {
-                  "type": "line",
-                  "id": "5Gg52",
-                  "x": 353,
-                  "y": 553,
-                  "name": "Constellation Line",
-                  "width": 44,
-                  "height": 44,
-                  "stroke": {
-                    "thickness": 0.5,
-                    "fill": "#8ab4f826"
-                  }
-                },
-                {
-                  "type": "ellipse",
                   "id": "n3hsJ",
-                  "x": 80,
-                  "y": 170,
+                  "x": 30,
+                  "y": 120,
                   "name": "Cluster Zone - Idea",
                   "fill": "#8ab4f808",
                   "width": 280,
@@ -2840,8 +2550,8 @@
                 {
                   "type": "ellipse",
                   "id": "pcmxD",
-                  "x": 360,
-                  "y": 290,
+                  "x": 310,
+                  "y": 280,
                   "name": "Cluster Zone - Todo",
                   "fill": "#8ab4f808",
                   "width": 260,
@@ -2855,8 +2565,8 @@
                 {
                   "type": "ellipse",
                   "id": "5R0px",
-                  "x": 570,
-                  "y": 140,
+                  "x": 600,
+                  "y": 120,
                   "name": "Cluster Zone - Learn",
                   "fill": "#8ab4f808",
                   "width": 240,
@@ -2870,8 +2580,8 @@
                 {
                   "type": "ellipse",
                   "id": "qyjrE",
-                  "x": 240,
-                  "y": 490,
+                  "x": 70,
+                  "y": 530,
                   "name": "Cluster Zone - Memo",
                   "fill": "#8ab4f808",
                   "width": 250,
@@ -2885,12 +2595,12 @@
                 {
                   "type": "ellipse",
                   "id": "wT4Qc",
-                  "x": 685,
-                  "y": 435,
+                  "x": 650,
+                  "y": 540,
                   "name": "Cluster Zone - Money",
                   "fill": "#8ab4f808",
-                  "width": 130,
-                  "height": 130,
+                  "width": 170,
+                  "height": 170,
                   "stroke": {
                     "align": "inside",
                     "thickness": 0.5,
@@ -2900,8 +2610,8 @@
                 {
                   "type": "frame",
                   "id": "zb84c",
-                  "x": 155,
-                  "y": 200,
+                  "x": 105,
+                  "y": 150,
                   "name": "Label Group - Idea",
                   "gap": 6,
                   "alignItems": "center",
@@ -2941,8 +2651,8 @@
                 {
                   "type": "frame",
                   "id": "Udndk",
-                  "x": 430,
-                  "y": 320,
+                  "x": 380,
+                  "y": 310,
                   "name": "Label Group - Todo",
                   "gap": 6,
                   "alignItems": "center",
@@ -2982,8 +2692,8 @@
                 {
                   "type": "frame",
                   "id": "uKLXZ",
-                  "x": 640,
-                  "y": 170,
+                  "x": 670,
+                  "y": 150,
                   "name": "Label Group - Learn",
                   "gap": 6,
                   "alignItems": "center",
@@ -3023,8 +2733,8 @@
                 {
                   "type": "frame",
                   "id": "0RrDr",
-                  "x": 313,
-                  "y": 498,
+                  "x": 143,
+                  "y": 538,
                   "name": "Label Group - Memo",
                   "gap": 6,
                   "alignItems": "center",
@@ -3064,8 +2774,8 @@
                 {
                   "type": "frame",
                   "id": "CNeMq",
-                  "x": 713,
-                  "y": 430,
+                  "x": 700,
+                  "y": 550,
                   "name": "Label Group - Money",
                   "gap": 6,
                   "alignItems": "center",
@@ -3101,6 +2811,722 @@
                       "fontWeight": "normal"
                     }
                   ]
+                },
+                {
+                  "type": "ellipse",
+                  "id": "17v4D",
+                  "x": 145,
+                  "y": 190,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 6,
+                  "height": 6,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "Pd9cH",
+                  "x": 180,
+                  "y": 205,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 4,
+                  "height": 4,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 10,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "yCxCg",
+                  "x": 210,
+                  "y": 230,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 7,
+                  "height": 7,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "Qm8Cp",
+                  "x": 195,
+                  "y": 270,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 5,
+                  "height": 5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 12,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "AXjbu",
+                  "x": 150,
+                  "y": 300,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 7,
+                  "height": 7,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "RXs5b",
+                  "x": 110,
+                  "y": 280,
+                  "name": "Star",
+                  "fill": "#8ab4f8cc",
+                  "width": 4,
+                  "height": 4,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f840",
+                    "blur": 8,
+                    "spread": 1
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "lRoVI",
+                  "x": 105,
+                  "y": 230,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 5,
+                  "height": 5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 12,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "lWfM6",
+                  "x": 165,
+                  "y": 340,
+                  "name": "Star",
+                  "fill": "#8ab4f8b3",
+                  "width": 3,
+                  "height": 3,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f840",
+                    "blur": 8,
+                    "spread": 1
+                  }
+                },
+                {
+                  "type": "path",
+                  "id": "h6HAh",
+                  "x": 105,
+                  "y": 190,
+                  "name": "Idea Constellation Line",
+                  "geometry": "M43 3l34 14 31.5 26.5-16 39-44 31-41-21-5-50 40.5-39.5m5.5 110.5l14.5 39",
+                  "width": 113,
+                  "height": 153,
+                  "stroke": {
+                    "thickness": 0.8,
+                    "fill": "#8ab4f83a"
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "0PThh",
+                  "x": 390,
+                  "y": 330,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 5,
+                  "height": 5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 12,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "PxEgC",
+                  "x": 430,
+                  "y": 350,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 7,
+                  "height": 7,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "oTFx6",
+                  "x": 470,
+                  "y": 365,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 4,
+                  "height": 4,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 10,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "Rtn1n",
+                  "x": 410,
+                  "y": 390,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 6,
+                  "height": 6,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "QGpGP",
+                  "x": 455,
+                  "y": 395,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 5,
+                  "height": 5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 12,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "HS21V",
+                  "x": 380,
+                  "y": 440,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 7,
+                  "height": 7,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "eXxkc",
+                  "x": 440,
+                  "y": 450,
+                  "name": "Star",
+                  "fill": "#8ab4f8cc",
+                  "width": 4,
+                  "height": 4,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f840",
+                    "blur": 8,
+                    "spread": 1
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "zNyRs",
+                  "x": 490,
+                  "y": 430,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 6,
+                  "height": 6,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "siqQ3",
+                  "x": 420,
+                  "y": 480,
+                  "name": "Star",
+                  "fill": "#8ab4f8b3",
+                  "width": 3,
+                  "height": 3,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f840",
+                    "blur": 8,
+                    "spread": 1
+                  }
+                },
+                {
+                  "type": "path",
+                  "id": "3WKZh",
+                  "x": 380,
+                  "y": 330,
+                  "name": "Todo Constellation Line",
+                  "geometry": "M12.5 2.5l41 21 39 14m-59 26l44 4m-44-4l20-40m24 44l15-30m-90 75l60 10 50-20m-110 10l31-49m79 39l-35-35m-35 85l20-30",
+                  "width": 115,
+                  "height": 155,
+                  "stroke": {
+                    "thickness": 0.8,
+                    "fill": "#8ab4f83a"
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "7vGk6",
+                  "x": 660,
+                  "y": 180,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 6,
+                  "height": 6,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "o1eVT",
+                  "x": 690,
+                  "y": 220,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 5,
+                  "height": 5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 12,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "V3zNR",
+                  "x": 720,
+                  "y": 185,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 7,
+                  "height": 7,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "nE0oc",
+                  "x": 750,
+                  "y": 230,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 4,
+                  "height": 4,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 10,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "3HlE1",
+                  "x": 780,
+                  "y": 190,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 6,
+                  "height": 6,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "URSZV",
+                  "x": 700,
+                  "y": 270,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 5,
+                  "height": 5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 12,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "3qQlx",
+                  "x": 760,
+                  "y": 280,
+                  "name": "Star",
+                  "fill": "#8ab4f8cc",
+                  "width": 4,
+                  "height": 4,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f840",
+                    "blur": 8,
+                    "spread": 1
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "HBSxG",
+                  "x": 730,
+                  "y": 310,
+                  "name": "Star",
+                  "fill": "#8ab4f8b3",
+                  "width": 3,
+                  "height": 3,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f840",
+                    "blur": 8,
+                    "spread": 1
+                  }
+                },
+                {
+                  "type": "path",
+                  "id": "Grvqt",
+                  "x": 660,
+                  "y": 180,
+                  "name": "Learn Constellation Line",
+                  "geometry": "M3 3l29.5 39.5 31-34 29 44 30.5-39.5m-90.5 29.5l10 50 60 10-10-50m-50 40l30 40 30-30",
+                  "width": 123,
+                  "height": 133,
+                  "stroke": {
+                    "thickness": 0.8,
+                    "fill": "#8ab4f83a"
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "mzeiz",
+                  "x": 190,
+                  "y": 570,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 6,
+                  "height": 6,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "hJDJQ",
+                  "x": 170,
+                  "y": 610,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 5,
+                  "height": 5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 12,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "cbM49",
+                  "x": 200,
+                  "y": 640,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 7,
+                  "height": 7,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "30SbJ",
+                  "x": 135,
+                  "y": 650,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 4,
+                  "height": 4,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 10,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "NPBXi",
+                  "x": 250,
+                  "y": 630,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 5,
+                  "height": 5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 12,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "RbVta",
+                  "x": 180,
+                  "y": 690,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 6,
+                  "height": 6,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "GUc0E",
+                  "x": 220,
+                  "y": 720,
+                  "name": "Star",
+                  "fill": "#8ab4f8cc",
+                  "width": 4,
+                  "height": 4,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f840",
+                    "blur": 8,
+                    "spread": 1
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "eYWCr",
+                  "x": 140,
+                  "y": 720,
+                  "name": "Star",
+                  "fill": "#8ab4f8b3",
+                  "width": 3,
+                  "height": 3,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f840",
+                    "blur": 8,
+                    "spread": 1
+                  }
+                },
+                {
+                  "type": "path",
+                  "id": "HWKED",
+                  "x": 135,
+                  "y": 570,
+                  "name": "Memo Constellation Line",
+                  "geometry": "M58 3l-20.5 39.5 31 31-66.5 9m66.5-9l49-11m-49 11l-21 49 40 30m-40-30l-40 30",
+                  "width": 120,
+                  "height": 153,
+                  "stroke": {
+                    "thickness": 0.8,
+                    "fill": "#8ab4f83a"
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "9QSoQ",
+                  "x": 730,
+                  "y": 575,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 6,
+                  "height": 6,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "Ubcxf",
+                  "x": 695,
+                  "y": 620,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 5,
+                  "height": 5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 12,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "8qkZq",
+                  "x": 765,
+                  "y": 620,
+                  "name": "Star",
+                  "fill": "#8ab4f8ff",
+                  "width": 5,
+                  "height": 5,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f866",
+                    "blur": 16,
+                    "spread": 3
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "cjhLj",
+                  "x": 733,
+                  "y": 660,
+                  "name": "Star",
+                  "fill": "#8ab4f8dd",
+                  "width": 4,
+                  "height": 4,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f84d",
+                    "blur": 10,
+                    "spread": 2
+                  }
+                },
+                {
+                  "type": "ellipse",
+                  "id": "jMdg4",
+                  "x": 722,
+                  "y": 600,
+                  "name": "Star",
+                  "fill": "#8ab4f8b3",
+                  "width": 3,
+                  "height": 3,
+                  "effect": {
+                    "type": "shadow",
+                    "shadowType": "outer",
+                    "color": "#8ab4f840",
+                    "blur": 8,
+                    "spread": 1
+                  }
+                },
+                {
+                  "type": "path",
+                  "id": "ZOHwy",
+                  "x": 695,
+                  "y": 575,
+                  "name": "Money Constellation Line",
+                  "geometry": "M38 3l-35.5 44.5 38 40 32-40z m-8 24.5l8-24.5",
+                  "width": 75,
+                  "height": 90,
+                  "stroke": {
+                    "thickness": 0.8,
+                    "fill": "#8ab4f83a"
+                  }
                 }
               ]
             },

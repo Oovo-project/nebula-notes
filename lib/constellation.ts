@@ -5,6 +5,25 @@ const STOP_WORDS = new Set(["about", "this", "that", "with", "from", "into", "to
 
 type Vec2 = { x: number; y: number };
 type LinkRow = { id: string; from: string; to: string; score: number };
+type ZoneLayoutNode = {
+  id: string;
+  category: MemoCategory;
+  count: number;
+  anchorX: number;
+  anchorY: number;
+  x: number;
+  y: number;
+  radius: number;
+};
+
+const ZONE_GAP = 1.8;
+const ZONE_MIN_SCALE = 0.44;
+const ZONE_BOUNDS = {
+  minX: 5,
+  maxX: 95,
+  minY: 13.8,
+  maxY: 90.6,
+};
 
 function hash(seed: string): number {
   let h = 2166136261;
@@ -46,6 +65,108 @@ function memoSimilarity(a: Memo, b: Memo): number {
 
 function getZoneRadius(zone: SkyZone): number {
   return zone.size / 2;
+}
+
+function getScaledZoneRadius(baseRadius: number, count: number): number {
+  return baseRadius + count * 1.15;
+}
+
+function clampZoneNode(node: ZoneLayoutNode) {
+  node.x = clamp(node.x, ZONE_BOUNDS.minX + node.radius, ZONE_BOUNDS.maxX - node.radius);
+  node.y = clamp(node.y, ZONE_BOUNDS.minY + node.radius, ZONE_BOUNDS.maxY - node.radius);
+}
+
+function hasZoneOverlap(nodes: ZoneLayoutNode[]): boolean {
+  for (let i = 0; i < nodes.length; i += 1) {
+    const a = nodes[i];
+    for (let j = i + 1; j < nodes.length; j += 1) {
+      const b = nodes[j];
+      const distance = Math.hypot(b.x - a.x, b.y - a.y);
+      const minDistance = a.radius + b.radius + ZONE_GAP;
+      if (distance < minDistance) return true;
+    }
+  }
+  return false;
+}
+
+function runZoneRelaxation(nodes: ZoneLayoutNode[]) {
+  for (let step = 0; step < 260; step += 1) {
+    for (let i = 0; i < nodes.length; i += 1) {
+      const a = nodes[i];
+      for (let j = i + 1; j < nodes.length; j += 1) {
+        const b = nodes[j];
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const distance = Math.max(0.0001, Math.hypot(dx, dy));
+        const minDistance = a.radius + b.radius + ZONE_GAP;
+        if (distance >= minDistance) continue;
+
+        const overlap = minDistance - distance;
+        const nx = dx / distance;
+        const ny = dy / distance;
+        const move = overlap * 0.5;
+
+        a.x -= nx * move;
+        a.y -= ny * move;
+        b.x += nx * move;
+        b.y += ny * move;
+      }
+    }
+
+    nodes.forEach((node) => {
+      node.x += (node.anchorX - node.x) * 0.024;
+      node.y += (node.anchorY - node.y) * 0.024;
+      clampZoneNode(node);
+    });
+  }
+}
+
+function resolveZoneLayout(baseZones: SkyZone[], countsByCategory: Map<MemoCategory, number>): SkyZone[] {
+  const createNodes = (scale: number): ZoneLayoutNode[] =>
+    baseZones.map((zone) => {
+      const count = countsByCategory.get(zone.category) ?? 0;
+      const baseRadius = getZoneRadius(zone);
+      const scaledRadius = getScaledZoneRadius(baseRadius, count) * scale;
+
+      return {
+        id: zone.id,
+        category: zone.category,
+        count,
+        anchorX: zone.x,
+        anchorY: zone.y,
+        x: zone.x,
+        y: zone.y,
+        radius: scaledRadius,
+      };
+    });
+
+  let low = ZONE_MIN_SCALE;
+  let high = 1;
+  let best = createNodes(ZONE_MIN_SCALE);
+  runZoneRelaxation(best);
+
+  for (let i = 0; i < 16; i += 1) {
+    const mid = (low + high) / 2;
+    const candidate = createNodes(mid);
+    runZoneRelaxation(candidate);
+
+    if (hasZoneOverlap(candidate)) {
+      high = mid;
+      continue;
+    }
+
+    low = mid;
+    best = candidate;
+  }
+
+  return best.map((node) => ({
+    id: node.id,
+    category: node.category,
+    count: node.count,
+    x: node.x,
+    y: node.y,
+    size: node.radius * 2,
+  }));
 }
 
 function enforceMinDistance(
@@ -303,10 +424,10 @@ export function buildConstellationSky(memos: Memo[], baseSky: Sky): Sky {
     grouped.set(zoneCategory, [...(grouped.get(zoneCategory) ?? []), memo]);
   });
 
-  const zones = baseSky.zones.map((zone) => ({
-    ...zone,
-    count: grouped.get(zone.category)?.length ?? 0,
-  }));
+  const countsByCategory = new Map<MemoCategory, number>(
+    baseSky.zones.map((zone) => [zone.category, grouped.get(zone.category)?.length ?? 0])
+  );
+  const zones = resolveZoneLayout(baseSky.zones, countsByCategory);
 
   const stars: SkyStar[] = [];
   const links: SkyLink[] = [];
