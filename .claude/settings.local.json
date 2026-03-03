@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(cmd.exe /c \"dir C:\\\\Users\\\\kamo5\\\\.claude\\\\ 2>&1\")"
-    ]
-  }
-}

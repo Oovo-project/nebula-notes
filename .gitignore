@@ -1,6 +1,39 @@
-node_modules
-.next-runtime
-.next
-.next-dev
-dev.out
-dev.err
+# Dependencies
+/node_modules
+
+# Next.js build output
+/.next
+/.next-dev
+/.next-runtime
+/out
+
+# Environment files
+.env*
+!.env.example
+
+# Logs and runtime artifacts
+*.log
+/dev.out
+/dev.err
+
+# Local database files
+/prisma/*.db
+/prisma/*.db-journal
+/prisma/*.db-shm
+/prisma/*.db-wal
+
+# User uploads
+/public/uploads/*
+!/public/uploads/.gitkeep
+
+# Local tool settings
+/.claude/settings.local.json
+
+# Design exports
+/design/generated-*.png
+/design/home.png
+/design/images/generated-*.png
+
+# OS files
+.DS_Store
+Thumbs.db
